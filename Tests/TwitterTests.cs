@@ -10,7 +10,10 @@ namespace TestProject1
 
         Random random;
         TwitterApiClient client;
-
+        string consumerKey = Environment.GetEnvironmentVariable("CONSUMER_KEY");
+        string consumerSecret = Environment.GetEnvironmentVariable("CONSUMER_SECRET");
+        string accessToken = Environment.GetEnvironmentVariable("ACCESS_TOKEN");
+        string accessTokenSecret = Environment.GetEnvironmentVariable("ACCESS_TOKEN_SECRET");
 
         [SetUp]
         public void Setup()
@@ -19,7 +22,7 @@ namespace TestProject1
 
             var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
 
-            client = new TwitterApiClient("https://api.x.com", config.ConsumerKey, config.ConsumerSecret, config.AccessToken, config.AccessTokenSecret);
+            client = new TwitterApiClient("https://api.x.com", consumerKey, consumerSecret, accessToken, accessTokenSecret);
 
             random = new Random();
         }

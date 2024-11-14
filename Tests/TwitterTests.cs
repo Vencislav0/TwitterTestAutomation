@@ -20,7 +20,7 @@ namespace TestProject1
         {
             
 
-            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
+            
 
             client = new TwitterApiClient("https://api.x.com", consumerKey, consumerSecret, accessToken, accessTokenSecret);
 

@@ -12,7 +12,7 @@ namespace ClassLibrary
         {
             var options = new RestClientOptions(baseUrl)
             {
-                MaxTimeout = 3000,
+                MaxTimeout = 10000,
                 Authenticator = OAuth1Authenticator.ForAccessToken(consumerKey, consumerSecret, accessToken, accessTokenSecret)
             };
 
@@ -28,7 +28,7 @@ namespace ClassLibrary
             tweetRequest.AddHeader("Content-Type", "application/json");
             tweetRequest.AddJsonBody(new { text = postContent });
 
-            RestResponse tweetResponse = client.Execute(tweetRequest);
+            RestResponse tweetResponse = client.Execute(tweetRequest);            
 
             if (tweetResponse.IsSuccessful)
             {
@@ -39,11 +39,29 @@ namespace ClassLibrary
                 Console.WriteLine(tweetResponse.ErrorMessage);
             }
 
+            return tweetResponse != null ? JsonConvert.DeserializeObject<Post>(tweetResponse.Content) : null;
+
+
+
+        }
+
+        public Post GetPost(string id)
+        {
+            var tweetRequest = new RestRequest($"/2/tweets/{id}", Method.Get);
+
+            tweetRequest.AddHeader("Content-Type", "application/json");
+
+            var tweetResponse = client.Execute(tweetRequest);
+
             return tweetResponse.IsSuccessful ? JsonConvert.DeserializeObject<Post>(tweetResponse.Content) : null;
 
 
 
         }
+
+
+
+
 
     }
 }

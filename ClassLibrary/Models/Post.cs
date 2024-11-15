@@ -10,6 +10,8 @@ namespace ClassLibrary.Models
     public class Post
     {
         public Data data { get; set; }
+        public string title { get; set; }
+        public int status { get; set; }
 
     }
 
@@ -19,6 +21,10 @@ namespace ClassLibrary.Models
         public string Id { get; set; }
         [JsonProperty("text")]
         public string? Text { get; set; }
+        [JsonProperty("edit_history_tweet_ids")]
+        public List<string> EditHistoryTweetIds { get; set; }
 
     }
+
+    
 }

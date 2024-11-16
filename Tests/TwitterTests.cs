@@ -59,7 +59,7 @@ namespace TestProject1
 
 
 
-            Assert.That(response, Is.Null);            
+            Assert.That(response.data, Is.Null);            
 
         }
 

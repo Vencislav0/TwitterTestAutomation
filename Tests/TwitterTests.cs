@@ -1,6 +1,7 @@
 using ClassLibrary;
 using Newtonsoft.Json;
 using RestSharp;
+using System.Net;
 
 namespace TestProject1
 {
@@ -41,8 +42,9 @@ namespace TestProject1
 
 
 
-            Assert.That(Convert.ToInt64(response.data.Id), Is.GreaterThan(0));
-            Assert.That(response.data.Text, Is.EqualTo(randomText));
+            Assert.That(Convert.ToInt64(response.Data.Id), Is.GreaterThan(0), "Id not found.");
+            Assert.That(response.Data.Text, Is.EqualTo(randomText), "Tweet content is not as expected.");
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Created), "Unexpected status code.");
 
 
         }
@@ -59,7 +61,10 @@ namespace TestProject1
 
 
 
-            Assert.That(response.data, Is.Null);            
+            Assert.That(response.Data, Is.Null, "Data should be null in this request.");
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest), "Not the expected status code.");
+            Assert.That(response.Errors[0].Message, Is.EqualTo("Please include either text or media in your Tweet."), "Message is not as expected.");
+            Assert.That(response.Title, Is.EqualTo("Invalid Request"), "Title is not as expected.");
 
         }
 
@@ -75,7 +80,10 @@ namespace TestProject1
             var response2 = client.CreatePost(Text);
 
 
-            Assert.Pass("Passes for now, for implementation later.");
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Created));
+            Assert.That(response2.StatusCode, Is.EqualTo(HttpStatusCode.Forbidden));
+            Assert.That(response2.Status, Is.EqualTo(403));
+            Assert.That(response2.Detail, Is.EqualTo("You are not allowed to create a Tweet with duplicate content."));
 
 
 
@@ -90,11 +98,12 @@ namespace TestProject1
             var randomText = "Hello, this is a tweet from my RestSharp project" + random.Next(1, 1000);
             var postResponse = client.CreatePost(randomText);
 
-            var responseFromPost = client.GetPost(postResponse.data.Id);
+            var responseFromPost = client.GetPost(postResponse.Data.Id);
 
             
-            Assert.That(postResponse.data.Id, Is.EqualTo(responseFromPost.data.Id));
-            Assert.That(responseFromPost.data.Text, Is.EqualTo(randomText));
+            Assert.That(postResponse.Data.Id, Is.EqualTo(responseFromPost.Data.Id));
+            Assert.That(responseFromPost.Data.Text, Is.EqualTo(randomText));
+            Assert.That(responseFromPost.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
         }
 

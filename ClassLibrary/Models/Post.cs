@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,10 +10,20 @@ namespace ClassLibrary.Models
 {
     public class Post
     {
-        public Data data { get; set; }
-        public string title { get; set; }
-        public int status { get; set; }
+        public Data Data { get; set; }
+        public string Title { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
+        public int Status { get; set; }
 
+        public string Detail { get; set; }
+
+        public List<ErrorDetails> Errors { get; set; }
+
+    }
+
+    public class ErrorDetails
+    {
+        public string Message { get; set; }
     }
 
     public class Data

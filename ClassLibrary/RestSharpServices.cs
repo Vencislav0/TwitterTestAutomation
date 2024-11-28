@@ -39,7 +39,11 @@ namespace ClassLibrary
                 Console.WriteLine(tweetResponse.ErrorMessage);
             }
 
-            return tweetResponse != null ? JsonConvert.DeserializeObject<Post>(tweetResponse.Content) : null;
+            var post = JsonConvert.DeserializeObject<Post>(tweetResponse.Content);
+
+            post.StatusCode = tweetResponse.StatusCode;
+
+            return tweetResponse != null ? post : null;
 
 
 
@@ -53,7 +57,11 @@ namespace ClassLibrary
 
             var tweetResponse = client.Execute(tweetRequest);
 
-            return tweetResponse.IsSuccessful ? JsonConvert.DeserializeObject<Post>(tweetResponse.Content) : null;
+            var post = JsonConvert.DeserializeObject<Post>(tweetResponse.Content);
+
+            post.StatusCode = tweetResponse.StatusCode;
+
+            return tweetResponse.IsSuccessful ? post : null;
 
 
 
